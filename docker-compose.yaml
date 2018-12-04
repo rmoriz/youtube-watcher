@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+
+  # TODO: caddy as proxy
+  #
+
+  # public
+  webhook:
+    build:
+      context: ./webhook
+    volumes:
+      - ./_data/webhook:/data:consistent
+    ports:
+      - "4567:4567"
+    env_file:
+      - .webhook.env
+    depends_on:
+      - mqtt
+
+  # mqtt server public
+  mqtt:
+    build:
+      context: ./mqtt
+    ports:
+      - "8883:8883"
+      - "9001:9001"
+    volumes:
+      - ./_data/mqtt:/data:consistent
+
+  # needs to access YouTube with the same IP as the iOS device will do later(!)
+  downloader:
+    build:
+      context: ./downloader
+    env_file:
+      - .downloader.env
+    volumes:
+      - ./_data/downloader:/data:consistent
+    depends_on:
+      - mqtt

@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:yt="http://www.youtube.com/xml/schemas/2015" xmlns="http://www.w3.org/2005/Atom"><link rel="hub" href="https://pubsubhubbub.appspot.com"/><link rel="self" href="https://www.youtube.com/xml/feeds/videos.xml?channel_id=UC6nZlvfz4YWoBWbjiaYJA3g"/><title>YouTube video feed</title><updated>2018-12-03T21:56:59.301374024+00:00</updated><entry>
+ <id>yt:video:KjCqHpq4kmw</id>
+ <yt:videoId>Y8uefUKj2dk</yt:videoId>
+ <yt:channelId>UC6nZlvfz4YWoBWbjiaYJA3g</yt:channelId>
+ <title>Why is Paul always wrong?</title>
+ <link rel="alternate" href="https://www.youtube.com/watch?v=Y8uefUKj2dk"/>
+ <author>
+  <name>Louis Rossmann LIVE board repair</name>
+  <uri>https://www.youtube.com/channel/UC6nZlvfz4YWoBWbjiaYJA3g</uri>
+ </author>
+ <published>2018-12-03T21:56:27+00:00</published>
+ <updated>2018-12-03T21:56:59.301374024+00:00</updated>
+</entry></feed>

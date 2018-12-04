@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:yt="http://www.youtube.com/xml/schemas/2015" xmlns="http://www.w3.org/2005/Atom"><link rel="hub" href="https://pubsubhubbub.appspot.com"/><link rel="self" href="https://www.youtube.com/xml/feeds/videos.xml?channel_id=UCSGrdeSz_R_p-1iTqIkxnzQ"/><title>YouTube video feed</title><updated>2018-12-05T16:35:11.906858733+00:00</updated><entry>
+  <id>yt:video:zyxSocWUubE</id>
+  <yt:videoId>zyxSocWUubE</yt:videoId>
+  <yt:channelId>UCSGrdeSz_R_p-1iTqIkxnzQ</yt:channelId>
+  <title>Unterwegs Reichensachsen-Heringen-Reese</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=zyxSocWUubE"/>
+  <author>
+   <name>Germany Jens</name>
+   <uri>https://www.youtube.com/channel/UCSGrdeSz_R_p-1iTqIkxnzQ</uri>
+  </author>
+  <published>2018-12-05T16:32:21+00:00</published>
+  <updated>2018-12-05T16:35:11.906858733+00:00</updated>
+ </entry></feed>

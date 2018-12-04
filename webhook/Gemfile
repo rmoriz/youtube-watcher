@@ -1,0 +1,12 @@
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+
+git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
+
+gem 'concurrent-ruby'
+gem 'feedjira', '~> 2.2'
+gem 'mqtt'
+gem 'puma'
+gem 'sinatra'
+gem 'sinatra-contrib'
