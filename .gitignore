@@ -3,3 +3,4 @@
 .env
 _data/**
 bin/
+test_webhook.sh

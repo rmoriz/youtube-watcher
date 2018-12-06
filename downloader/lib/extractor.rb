@@ -6,6 +6,7 @@ require 'shellwords'
 require 'uri'
 
 require 'mixlib/shellout'
+require 'zaru'
 
 #:nodoc:
 class Extractor
@@ -25,6 +26,9 @@ class Extractor
     @download_directory = download_directory
   end
 
+  # google removes HLS/M3U some time after the stream ended but we should
+  # receive the WebSub push fast enough to start scraping.
+  #
   def url
     logger.debug "got message: #{message}"
     url = URI.parse(message['url'])
@@ -40,19 +44,22 @@ class Extractor
     time = Time.parse message['published']
 
     Shellwords.escape(
-      time.strftime('%Y-%m-%d_%H:%M:%S') +
+      time.strftime('%Y-%m-%d_%H%M%S') +
       '-' +
-      message['title'] +
+      Zaru.sanitize!(message['title']) +
       '-' +
       message['youtube_video_id'] +
       '.mp4'
     )
   end
 
-  def download
+  def capture_stream
+    directory = ::File.join(@download_directory, Zaru.sanitize!(message['author']))
+    FileUtils.mkdir_p directory
+
     shellout = Mixlib::ShellOut.new(
       download_command(URI.parse(message['url']), filename),
-      cwd: @download_directory,
+      cwd: directory,
       timeout: 86_400,
       live_stdout: stream_reader,
       live_stderr: stream_reader
@@ -61,6 +68,11 @@ class Extractor
 
     logger.error(shellout.stderr) if shellout.error?
   end
+
+  # TODO: Fix broken files, e.g. corrupt streaming
+  # ffmpeg -err_detect ignore_err -i video.mp4 -c copy video_fixed.mp4
+  #
+  # ... but I need to find out error detection first. :(
 
   def download_command(url, filename)
     cmd = <<~END_OF_COMMAND
@@ -74,7 +86,6 @@ class Extractor
     END_OF_COMMAND
 
     logger.debug "CMD: #{cmd}"
-
     cmd
   end
 

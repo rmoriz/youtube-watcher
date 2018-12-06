@@ -55,7 +55,7 @@ threads << Thread.new do
     end
 
     Thread.new do
-      extractor.download
+      extractor.capture_stream
     end
   end
 end

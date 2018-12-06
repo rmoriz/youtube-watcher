@@ -23,6 +23,7 @@ GEM
       unicode-display_width (~> 1.4.0)
     ruby-progressbar (1.10.0)
     unicode-display_width (1.4.0)
+    zaru (0.2.0)
 
 PLATFORMS
   ruby
@@ -32,6 +33,7 @@ DEPENDENCIES
   mixlib-shellout
   mqtt
   rubocop
+  zaru
 
 BUNDLED WITH
    1.17.1

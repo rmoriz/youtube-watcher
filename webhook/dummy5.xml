@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:yt="http://www.youtube.com/xml/schemas/2015" xmlns="http://www.w3.org/2005/Atom"><link rel="hub" href="https://pubsubhubbub.appspot.com"/><link rel="self" href="https://www.youtube.com/xml/feeds/videos.xml?channel_id=UC6nZlvfz4YWoBWbjiaYJA3g"/><title>YouTube video feed</title><updated>2018-12-05T23:04:46.68385707+00:00</updated><entry>
+  <id>yt:video:hRL75b-Afn4</id>
+  <yt:videoId>hRL75b-Afn4</yt:videoId>
+  <yt:channelId>UC6nZlvfz4YWoBWbjiaYJA3g</yt:channelId>
+  <title>Paul's Emancipation</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=D5ALdUmJBwo"/>
+  <author>
+   <name>Louis Rossmann LIVE board repair</name>
+   <uri>https://www.youtube.com/channel/UC6nZlvfz4YWoBWbjiaYJA3g</uri>
+  </author>
+  <published>2018-12-05T23:04:20+00:00</published>
+  <updated>2018-12-05T23:04:46.68385707+00:00</updated>
+ </entry></feed>
