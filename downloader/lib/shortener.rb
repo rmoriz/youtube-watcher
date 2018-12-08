@@ -9,20 +9,14 @@ class Shortener
       ENV['MQTT_SERVER']
   end
 
-  def self.shorten_with_prefix(payload, public_url)
-    shorten "vlc://#{payload}", public_url
+  def self.shorten_with_prefix(payload)
+    payload['stream_url'] = "vlc://#{payload['stream_url']}"
+    shorten payload
   end
 
-  def self.shorten(payload, public_url)
+  def self.shorten(payload)
     MQTT::Client.connect(mqtt_dsn) do |c|
-      c.publish('SHORTENER_REQUEST', {
-        url: payload.to_s,
-        public_url: public_url.to_s
-      }.to_json)
+      c.publish('SHORTENER_REQUEST', payload.to_json)
     end
-  end
-
-  def self.get_link_for_key(_uri, body)
-    JSON.parse(body)['short']
   end
 end

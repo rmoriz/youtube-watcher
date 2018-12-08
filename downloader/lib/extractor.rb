@@ -78,8 +78,12 @@ class Extractor
     cmd = <<~END_OF_COMMAND
       streamlink \
         --hls-live-restart \
-        --hls-segment-threads 10 \
-        --hds-segment-threads 10 \
+        --hls-segment-threads 2 \
+        --hds-segment-threads 2 \
+        --retry-streams 10 \
+        --retry-max 60 \
+        --retry-open 10 \
+        --default-stream best \
         --output #{filename} \
         #{url} \
         best

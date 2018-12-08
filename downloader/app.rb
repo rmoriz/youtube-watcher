@@ -49,9 +49,13 @@ threads << Thread.new do
     logger.debug extractor.url
 
     Thread.new do
+      payload = message.dup.tap do |m|
+        m['stream_url'] = extractor.url
+      end
+
       # prefix is vlc:// which opens VLC with the stream on iOS after 2 taps
       # will send shorten requet via MQTT
-      shortend_uri = Shortener.shorten_with_prefix(extractor.url, message['public_url'])
+      shortend_uri = Shortener.shorten_with_prefix(payload)
     end
 
     Thread.new do
@@ -70,7 +74,8 @@ threads << Thread.new do
     message = JSON.parse json_message
     logger.info message
 
-    Pusher.deliver(message['short'].to_s, message['short'].to_s)
+    message_text = "#{message['author']} / #{message['title']}"
+    Pusher.deliver(message_text, message['short_url'].to_s)
   end
 end
 

@@ -26,20 +26,15 @@ class Shortener
     @data
   end
 
-  def add(url, public_url, expiration = nil)
-    expiration ||= Time.new + DEFAULT_EXPIRATION
+  def add(payload)
+    payload['expiration'] ||= Time.new + DEFAULT_EXPIRATION
 
-    key = Digest::SHA256.base64digest(url).gsub(/\W/, '')[0, 12]
+    key = Digest::SHA256.base64digest(payload['stream_url']).gsub(/\W/, '')[0, 12]
+    payload['short_url'] = url_for_key(key)
 
-    @data[key] = {
-      'key' => key,
-      'short' => url_for_key(key),
-      'url' => url,
-      'public_url' => public_url,
-      'expiration' => expiration
-    }
+    @data[key] = payload
 
-    logger.debug "shortener created: #{key} for URL: #{url} [#{public_url}]"
+    logger.debug "shortener created: #{key} for URL: #{payload['stream_url']} [#{payload['public_url']}]"
     @data[key]
   end
 
@@ -48,7 +43,7 @@ class Shortener
   end
 
   def public_url_exists?(public_url)
-    !@data.select { |key, data| data['public_url'] == public_url }.empty?
+    !@data.select { |key, entry| entry['public_url'] == public_url }.empty?
   end
 
   def lookup(key)
@@ -75,11 +70,7 @@ class Shortener
 
       client.get do |_topic, json_message|
         message = JSON.parse(json_message)
-        payload = Shortener.instance.add(
-          message['url'],
-          message['public_url'],
-          message['expiration']
-        )
+        payload = Shortener.instance.add(message)
 
         MQTT::Client.connect(mqtt_dsn) do |c|
           c.publish('SHORTENER_RESPONSE', payload.to_json)

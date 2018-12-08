@@ -89,7 +89,7 @@ class Websub < Sinatra::Base
 
   get '/:id' do
     if (link = Shortener.instance.lookup(params[:id]))
-      redirect link['url']
+      redirect link['stream_url']
     else
       status 404
       body "404"
