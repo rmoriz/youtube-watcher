@@ -9,8 +9,8 @@ services:
   webhook:
     build:
       context: ./webhook
-    volumes:
-      - ./_data/webhook:/data:consistent
+      args:
+        RUBY_VERSION: 2.6.0-rc2-alpine3.8
     ports:
       - "4567:4567"
     env_file:
@@ -22,19 +22,36 @@ services:
   mqtt:
     build:
       context: ./mqtt
+
     ports:
       - "8883:8883"
       - "9001:9001"
     volumes:
-      - ./_data/mqtt:/data:consistent
+      - mqtt_data:/data:consistent
 
   # needs to access YouTube with the same IP as the iOS device will do later(!)
   downloader:
     build:
       context: ./downloader
+      args:
+        RUBY_VERSION: 2.6.0-rc2-alpine3.8
     env_file:
       - .downloader.env
     volumes:
-      - ./_data/downloader:/data:consistent
+      - video_data:/data:consistent
     depends_on:
       - mqtt
+
+  pusher:
+    build:
+      context: ./pusher
+      args:
+        RUBY_VERSION: 2.6.0-rc2-alpine3.8
+    env_file:
+      - .pusher.env
+    depends_on:
+      - mqtt
+
+volumes:
+  video_data:
+  mqtt_data:

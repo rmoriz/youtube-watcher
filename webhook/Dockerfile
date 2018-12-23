@@ -1,8 +1,8 @@
-FROM ruby:2.6-rc-alpine
+ARG RUBY_VERSION
+FROM ruby:${RUBY_VERSION}
 
 RUN apk add --update --no-cache ruby-dev build-base \
   libxml2-dev libxslt-dev pcre-dev libffi-dev \
-  mariadb-dev postgresql-dev \
   && gem install nokogiri -- --use-system-libraries \
   && gem install bundler --pre
 

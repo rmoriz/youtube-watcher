@@ -10,8 +10,10 @@ require 'uri'
 
 require 'mqtt'
 
-require_relative 'lib/downloader'
+require_relative 'lib/extractor'
 require_relative 'lib/stream_reader'
+require_relative 'lib/shortener'
+require_relative 'lib/pusher'
 
 $stdout.sync = true
 
@@ -39,14 +41,43 @@ threads << Thread.new do
     message = JSON.parse json_message
     logger.debug "message: #{message}"
 
+
     Thread.new do
-      dl = Downloader.new(
+      extractor = Extractor.new(
         logger: logger,
         message: message,
         download_directory: download_directory
       )
-      dl.capture_stream
+
+      url = extractor.url
+
+      logger.debug "extractor url: #{url}"
+
+      exit unless url
+
+      payload = message.dup.tap do |m|
+        m['stream_url'] = extractor.url
+      end
+
+      # prefix is vlc:// which opens VLC with the stream on iOS after 2 taps
+      # will send shorten requet via MQTT
+      Shortener.shorten_with_prefix(payload)
     end
+  end
+end
+
+threads << Thread.new do
+  client = MQTT::Client.connect(mqtt_dsn)
+  client.subscribe('SHORTENER_RESPONSE')
+  logger.info 'waiting for SHORTENER_RESPONSE'
+
+  client.get do |_topic, json_message|
+    logger.info 'got SHORTENER_RESPONSE'
+    message = JSON.parse json_message
+    logger.info message
+
+    message_text = "#{message['author']} / #{message['title']}"
+    Pusher.deliver(message_text, message['short_url'].to_s)
   end
 end
 

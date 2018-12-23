@@ -9,18 +9,17 @@ RUN apk add --update --no-cache ruby-dev build-base \
   && python3 -m ensurepip \
   && rm -r /usr/lib/python*/ensurepip \
   && pip3 install --upgrade pip setuptools streamlink \
-  && adduser -S -u 1000 downloader -h /usr/src/app \
-  && mkdir -p /data \
-  && chown -R downloader:nogroup /data
-  
+  && adduser -S downloader -h /usr/src/app
+
 WORKDIR /usr/src/app
 
 COPY --chown=downloader:nogroup Gemfile Gemfile.lock ./
 RUN bundle install
+
 COPY --chown=downloader:nogroup . .
 
 USER downloader
-VOLUME /data
+
 ENV RACK_ENV="production"
 
 CMD ["ruby", "/usr/src/app/app.rb"]

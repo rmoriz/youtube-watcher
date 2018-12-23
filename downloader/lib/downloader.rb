@@ -9,7 +9,7 @@ require 'mixlib/shellout'
 require 'zaru'
 
 #:nodoc:
-class Extractor
+class Downloader
   attr_accessor :logger
   attr_accessor :message
   attr_accessor :download_directory
@@ -26,39 +26,15 @@ class Extractor
     @download_directory = download_directory
   end
 
-  # google removes HLS/M3U some time after the stream ended but we should
-  # receive the WebSub push fast enough to start scraping.
-  #
-  def url
-    logger.debug "got message: #{message}"
-    url = URI.parse(message['url'])
-    streamlink_cmd = Mixlib::ShellOut.new("streamlink --stream-url #{url} best")
-    streamlink_cmd.run_command
-
-    logger.error streamlink_cmd.stderr if streamlink_cmd.error?
-
-    streamlink_cmd.stdout
-  end
-
-  def filename
-    time = Time.parse message['published']
-
-    Shellwords.escape(
-      time.strftime('%Y-%m-%d_%H%M%S') +
-      '-' +
-      Zaru.sanitize!(message['title']) +
-      '-' +
-      message['youtube_video_id'] +
-      '.mp4'
-    )
-  end
-
   def capture_stream
     directory = ::File.join(@download_directory, Zaru.sanitize!(message['author']))
     FileUtils.mkdir_p directory
 
     shellout = Mixlib::ShellOut.new(
-      download_command(URI.parse(message['url']), filename),
+      download_command(
+        URI.parse(message['url']),
+        filename
+      ),
       cwd: directory,
       timeout: 86_400,
       live_stdout: stream_reader,
@@ -91,6 +67,21 @@ class Extractor
 
     logger.debug "CMD: #{cmd}"
     cmd
+  end
+
+  protected
+
+  def filename
+    time = Time.parse message['published']
+
+    Shellwords.escape(
+      time.strftime('%Y-%m-%d_%H%M%S') +
+      '-' +
+      Zaru.sanitize!(message['title']) +
+      '-' +
+      message['youtube_video_id'] +
+      '.mp4'
+    )
   end
 
   def stream_reader

@@ -62,13 +62,13 @@ class Websub < Sinatra::Base
 
           logger.info "feed: #{entry}"
 
-          if !Shortener.instance.public_url_exists?(entry['public_url'])
+          #if !Shortener.instance.public_url_exists?(entry['public_url'])
             MQTT::Client.connect(mqtt_dsn) do |c|
               c.publish('VIDEO', entry.to_json)
             end
-          else
-            logger.info "got ping for url #{entry['public_url']} but a shortener already exists."
-          end
+          #else
+        #    logger.info "got ping for url #{entry['public_url']} but a shortener already exists."
+      #    end
         else
           logger.info "no items in feed."
         end
