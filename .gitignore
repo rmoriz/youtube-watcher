@@ -1,6 +1,5 @@
-.webhook.env
-.downloader.env
 .env
+*.env
 _data/**
 test_webhook.sh
 hosts/internal

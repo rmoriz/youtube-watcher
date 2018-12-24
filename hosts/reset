@@ -1,0 +1,7 @@
+kill ${TUNNEL_PID} &> /dev/null
+
+unset TUNNEL_PID
+unset SOCKET_NAME
+unset HOST
+unset DOCKER_HOST
+unset DEPLOYMENT_TARGET
