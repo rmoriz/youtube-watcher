@@ -1,0 +1,10 @@
+diff --git i/caddy/caddymain/run.go w/caddy/caddymain/run.go
+index c0d1ba4..91bca76 100644
+--- i/caddy/caddymain/run.go
++++ w/caddy/caddymain/run.go
+@@ -525,4 +525,4 @@ var (
+ )
+ 
+ // EnableTelemetry defines whether telemetry is enabled in Run.
+-var EnableTelemetry = true
++var EnableTelemetry = false

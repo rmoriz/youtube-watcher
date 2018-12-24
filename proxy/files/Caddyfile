@@ -1,0 +1,16 @@
+http://asdas.net:8080 {
+  redir https://asdas.net{uri}
+}
+
+https://asdas.net:8443 {
+  tls postmaster@asdas.net
+  limits 1mb
+  log stdout
+  errors stdout
+
+  proxy / webhook:4567 {
+    transparent
+    header_downstream -Server
+    header_upstream -Server
+  }
+}

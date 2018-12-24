@@ -6,13 +6,22 @@ services:
   #
 
   # public
+  proxy:
+    build:
+      context: ./proxy
+    ports:
+      - "80:8080"
+      - "443:8443"
+    volumes:
+      - caddy_config:/config
+    entrypoint: ["caddy", "-agree", "-http-port", "8080", "-https-port", "8443", "-conf", "/config/Caddyfile", "-log", "stdout"]
+
+
   webhook:
     build:
       context: ./webhook
       args:
         RUBY_VERSION: 2.6.0-rc2-alpine3.8
-    ports:
-      - "4567:4567"
     env_file:
       - .webhook.env
     depends_on:
@@ -42,16 +51,17 @@ services:
     depends_on:
       - mqtt
 
-  pusher:
-    build:
-      context: ./pusher
-      args:
-        RUBY_VERSION: 2.6.0-rc2-alpine3.8
-    env_file:
-      - .pusher.env
-    depends_on:
-      - mqtt
+#  pusher:
+#    build:
+#      context: ./pusher
+#      args:
+#        RUBY_VERSION: 2.6.0-rc2-alpine3.8
+#    env_file:
+#      - .pusher.env
+#    depends_on:
+#      - mqtt
 
 volumes:
   video_data:
   mqtt_data:
+  caddy_config:
