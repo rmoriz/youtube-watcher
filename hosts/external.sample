@@ -1,0 +1,15 @@
+SOCKET_NAME="docker.socket.example.com"
+HOST="example.com"
+
+if curl -f --unix-socket /tmp/${SOCKET_NAME} http://localhost/version &> /dev/null; then
+  echo "docker socket tunnel up"
+else
+  echo "docker socket tunnel down"
+  rm -rf /tmp/${SOCKET_NAME}
+  ssh -nNT -L /tmp/${SOCKET_NAME}:/var/run/docker.sock $HOST &
+  sleep 1
+fi
+
+export TUNNEL_PID=$!
+export DOCKER_HOST=unix:///tmp/${SOCKET_NAME}
+export DEPLOYMENT_TARGET="external"

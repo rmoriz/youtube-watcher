@@ -7,11 +7,9 @@ RUN apk add --no-cache git tar curl \
      && go get -u -d github.com/caddyserver/builds
 
 WORKDIR /go/src/github.com/mholt/caddy
-ADD files/cleanup.patch cleanup.patch
-ADD files/telemetry.patch telemetry.patch
+COPY files/ .
 
-RUN patch -p1 < cleanup.patch
-#&& patch -p1 < telemetry.patch
+RUN patch -p1 < cleanup.patch && patch -p1 < telemetry.patch.old
 
 WORKDIR /go/src/github.com/mholt/caddy/caddy
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o caddy  && ./caddy -version
