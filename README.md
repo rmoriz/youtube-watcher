@@ -22,6 +22,22 @@
 - record streams
 - watch streams using VLC which plays in background (no modal shit, no ads)
 
+## Deployment
+
+- create mqtt accounts (mosquitto_passwd -c mqtt/password_file)
+- create `.webhook.env`, `.pusher.env`, `.downloader.env` based on examples
+- create `hosts/external` and `hosts/internal` based on provided examples
+- deploy external services:
+  ```shell
+  source hosts/external
+  bin/deploy
+  ```
+- deploy internal services:
+  ```shell
+  source hosts/internal
+  bin/deploy
+  ```
+
 ## Which streams do you love?
 
 - [Louis Rossmann LIVE board repair](https://www.youtube.com/channel/UC6nZlvfz4YWoBWbjiaYJA3g)
