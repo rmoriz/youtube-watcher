@@ -1,0 +1,10 @@
+version: '3'
+services:
+
+  pusher:
+    build:
+      context: ./pusher
+      args:
+        RUBY_VERSION: 2.6.0-rc2-alpine3.8
+    env_file:
+      - .pusher.env
