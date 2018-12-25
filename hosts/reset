@@ -5,3 +5,4 @@ unset SOCKET_NAME
 unset HOST
 unset DOCKER_HOST
 unset DEPLOYMENT_TARGET
+unset COMPOSE_FILE

@@ -1,5 +1,5 @@
-SOCKET_NAME="docker.socket.external"
-HOST="fqdn.external.example.com"
+SOCKET_NAME="docker.socket.internal"
+HOST="fqdn.internal.example.com"
 
 if curl -f --unix-socket /tmp/${SOCKET_NAME} http://localhost/version &> /dev/null; then
   echo "docker socket tunnel up"
@@ -12,5 +12,5 @@ fi
 
 export TUNNEL_PID=$!
 export DOCKER_HOST=unix:///tmp/${SOCKET_NAME}
-export DEPLOYMENT_TARGET="external"
-export COMPOSE_FILE="docker-compose.external.yaml"
+export DEPLOYMENT_TARGET="internal"
+export COMPOSE_FILE="docker-compose.internal.yaml"
