@@ -12,4 +12,4 @@ find . -mmin +15 -type f -print0 \
       /incoming/ /data/
 
 # needs GNU find for -empty
-find . -type d -not -path ".stfolder" -empty -delete
+find . -type d -not -path ./.stfolder -empty -delete
