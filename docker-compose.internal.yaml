@@ -6,5 +6,30 @@ services:
       context: ./pusher
       args:
         RUBY_VERSION: 2.6.0-rc2-alpine3.8
+    restart: always
     env_file:
       - .pusher.env
+
+  archivist-syncthing:
+    build:
+      context: ./archivist-syncthing
+    restart: always
+    ports:
+      - "22222:8384"
+      - "22000:22000"
+      - "21027:21027/udp"
+    volumes:
+      - video_cache:/data
+      - syncthing:/var/syncthing
+
+  archivist-cleanup:
+    build:
+      context: ./archivist-cleanup
+    restart: always
+    volumes:
+      - video_cache:/incoming
+      - "/share/CE_CACHEDEV1_DATA/homes/rmoriz/youtube-watcher/downloads:/data"
+
+volumes:
+  syncthing:
+  video_cache:

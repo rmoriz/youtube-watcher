@@ -4,3 +4,5 @@ _data/**
 test_webhook.sh
 hosts/internal
 hosts/external
+archivist-syncthing/config/*
+downloader-syncthing/config/*

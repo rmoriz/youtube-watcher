@@ -2,10 +2,7 @@ version: '3'
 
 services:
 
-  # TODO: caddy as proxy
-  #
-
-  # public
+  # caddy
   proxy:
     build:
       context: ./proxy
@@ -17,6 +14,11 @@ services:
     entrypoint: ["caddy", "-agree", "-http-port", "8080", "-https-port", "8443", "-conf", "/config/Caddyfile", "-log", "stdout"]
 
 
+  # webhook:
+  #   - subscription manager
+  #   - webhook receiver
+  #   - url shortner/redirection provider
+  #
   webhook:
     build:
       context: ./webhook
@@ -38,6 +40,7 @@ services:
     volumes:
       - mqtt_data:/data:consistent
 
+  # fetch streams:
   # needs to access YouTube with the same IP as the iOS device will do later(!)
   downloader:
     build:
@@ -51,15 +54,16 @@ services:
     depends_on:
       - mqtt
 
-#  pusher:
-#    build:
-#      context: ./pusher
-#      args:
-#        RUBY_VERSION: 2.6.0-rc2-alpine3.8
-#    env_file:
-#      - .pusher.env
-#    depends_on:
-#      - mqtt
+  downloader-syncthing:
+    build:
+      context: ./downloader-syncthing
+    restart: always
+    ports:
+      - "127.0.0.1:8384:8384"
+      - "22000:22000"
+      - "21027:21027/udp"
+    volumes:
+      - video_data:/data
 
 volumes:
   video_data:
